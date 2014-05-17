@@ -35,11 +35,13 @@
             this.tbLogin = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.tbNotes = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.tbNotes = new System.Windows.Forms.RichTextBox();
+            this.lbCat = new System.Windows.Forms.Label();
+            this.lbTags = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -52,7 +54,7 @@
             this.panel1.Controls.Add(this.tbPassword);
             this.panel1.Controls.Add(this.tbLogin);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 458);
+            this.panel1.Location = new System.Drawing.Point(0, 534);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 26);
             this.panel1.TabIndex = 2;
@@ -99,6 +101,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lbTags);
+            this.panel2.Controls.Add(this.lbCat);
             this.panel2.Controls.Add(this.tbNotes);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.panel1);
@@ -106,8 +110,16 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 24);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 484);
+            this.panel2.Size = new System.Drawing.Size(200, 560);
             this.panel2.TabIndex = 4;
+            // 
+            // tbNotes
+            // 
+            this.tbNotes.Location = new System.Drawing.Point(0, 341);
+            this.tbNotes.Name = "tbNotes";
+            this.tbNotes.Size = new System.Drawing.Size(200, 96);
+            this.tbNotes.TabIndex = 6;
+            this.tbNotes.Text = "";
             // 
             // button1
             // 
@@ -137,7 +149,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(200, 24);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(515, 484);
+            this.webBrowser1.Size = new System.Drawing.Size(515, 560);
             this.webBrowser1.TabIndex = 5;
             // 
             // richTextBox1
@@ -146,23 +158,33 @@
             this.richTextBox1.Location = new System.Drawing.Point(200, 24);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(515, 484);
+            this.richTextBox1.Size = new System.Drawing.Size(515, 560);
             this.richTextBox1.TabIndex = 6;
             this.richTextBox1.Text = "";
             // 
-            // tbNotes
+            // lbCat
             // 
-            this.tbNotes.Location = new System.Drawing.Point(0, 341);
-            this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(200, 96);
-            this.tbNotes.TabIndex = 6;
-            this.tbNotes.Text = "";
+            this.lbCat.AutoSize = true;
+            this.lbCat.Location = new System.Drawing.Point(23, 444);
+            this.lbCat.Name = "lbCat";
+            this.lbCat.Size = new System.Drawing.Size(66, 13);
+            this.lbCat.TabIndex = 7;
+            this.lbCat.Text = "Категории: ";
+            // 
+            // lbTags
+            // 
+            this.lbTags.AutoSize = true;
+            this.lbTags.Location = new System.Drawing.Point(26, 493);
+            this.lbTags.Name = "lbTags";
+            this.lbTags.Size = new System.Drawing.Size(31, 13);
+            this.lbTags.TabIndex = 8;
+            this.lbTags.Text = "Тэги";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(715, 508);
+            this.ClientSize = new System.Drawing.Size(715, 584);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.panel2);
@@ -174,6 +196,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,6 +216,8 @@
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.RichTextBox tbNotes;
+        private System.Windows.Forms.Label lbTags;
+        private System.Windows.Forms.Label lbCat;
 
     }
 }

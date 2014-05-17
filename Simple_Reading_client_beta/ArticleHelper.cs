@@ -9,6 +9,9 @@ namespace Simple_Reading_client_beta
     {
         public string Text { set; get; }
         public string Notes { set; get; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+
 
         public ArticleHelper(string text, string n)
         {
@@ -19,6 +22,13 @@ namespace Simple_Reading_client_beta
         public ArticleHelper(string text)
         {
             this.Text = text;
+        }
+
+        public ArticleHelper(string text, string n, int id)
+        {
+            this.Text = text;
+            this.Notes = n;
+            this.Id = id;
         }
     }
 }

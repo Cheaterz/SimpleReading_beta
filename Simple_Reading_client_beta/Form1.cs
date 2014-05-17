@@ -13,12 +13,13 @@ using System.Configuration;
  * TODO:
  * класс Article?
  * многотабличный запрос, чтобы вытащить комменты, дату, заголовок, текст, тэги, категорию и заметки
- * добавление статей (или изменение тэгов и т.д.)
+ * добавление статей (или изменение тэгов, заметок и т.д.)
  * внешний вид статьи!!!!!!
  * плагин?
  * 
  * отдельные функции коннекта, аутентификации и т.д.
  * на мскл сервере - юзер с правами доступа только к функциям проверки юзера
+ * процедура check_tags?
  * 
  * админская часть
  */
@@ -91,25 +92,51 @@ namespace Simple_Reading_client_beta
             //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
             da = new SqlDataAdapter();
             //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
+            
+            //получим актуальные данные со всех таблиц
             SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + uh.Id, conn);
             da.SelectCommand = getBook;
             da = new SqlDataAdapter(getBook);
             da.Fill(set, "book");
 
-            SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
+            SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + uh.Id, conn);
             da.SelectCommand = getComments;
             da = new SqlDataAdapter(getComments);
-            da.Fill(set, "book1");
+            da.Fill(set, "notes");
 
-
-            foreach (DataRow row in set.Tables["book1"].Rows)
-            {
-                MessageBox.Show(row["comment_text"].ToString());
-            }
+            int i = 0;
             foreach (DataRow row in set.Tables["book"].Rows)
             {
-                MessageBox.Show(row["title"].ToString());
+                string note = "";
+                foreach (DataRow rowNote in set.Tables["notes"].Rows)
+                {
+                    if ((int)rowNote["idarticle"] == (int)row["id"])
+                    {
+                        note = rowNote["note_text"].ToString();
+                    }
+                }
+                listView1.Items.Add(row["title"].ToString());
+                listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString(), note);
+                (listView1.Items[i].Tag as ArticleHelper).Id = (int)row["id"];
+                i++;
             }
+
+            //достать тэги и категории
+
+
+            //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
+            //da.SelectCommand = getComments;
+            //da = new SqlDataAdapter(getComments);
+            //da.Fill(set, "comments");
+
+            //foreach (DataRow row in set.Tables["comments"].Rows)
+            //{
+            //    MessageBox.Show(row["comment_text"].ToString());
+            //}
+            //foreach (DataRow row in set.Tables["book"].Rows)
+            //{
+            //    MessageBox.Show(row["title"].ToString());
+            //}
 
             table = set.Tables["book"];
             //var q = from t in table.AsEnumerable()
@@ -120,16 +147,16 @@ namespace Simple_Reading_client_beta
             //            Text = t.Field<string>("article_text"),
             //        };
 
-            int i = 0;
-            foreach (DataRow row in set.Tables["book"].Rows)
-            {
-                listView1.Items.Add(row["title"].ToString());
-                listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString());//, row["Notes"].ToString());
-                //listView1.Items[i].Tag = row["article_text"].ToString();
-                //SubItems.Add(row["iduser"].ToString());
-                i++;
-                //MessageBox.Show(row["title"].ToString());
-            }
+            //int i = 0;
+            //foreach (DataRow row in set.Tables["book"].Rows)
+            //{
+            //    listView1.Items.Add(row["title"].ToString());
+            //    listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString());//, row["Notes"].ToString());
+            //    //listView1.Items[i].Tag = row["article_text"].ToString();
+            //    //SubItems.Add(row["iduser"].ToString());
+            //    i++;
+            //    //MessageBox.Show(row["title"].ToString());
+            //}
 
             //var res = from n in set.Tables[0].Rows
             //          select n;
@@ -150,7 +177,7 @@ namespace Simple_Reading_client_beta
                 return;
             ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
             richTextBox1.Text = ah.Text;
-            //tbNotes.Text = ah.Notes;
+            tbNotes.Text = ah.Notes;
             //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
             //int i = (int)listView1.SelectedItems[0].Index;
             //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
