@@ -91,7 +91,14 @@ namespace Simple_Reading_client_beta
             //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
             da = new SqlDataAdapter();
             //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
-            SqlCommand commI = new SqlCommand("")
+            SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + uh.Id, conn);
+            da.SelectCommand = getBook;
+            da = new SqlDataAdapter(getBook);
+            da.Fill(set, "book");
+
+            SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
+            da.SelectCommand = getBook;
+            da = new SqlDataAdapter(getBook);
             da.Fill(set, "book");
 
 

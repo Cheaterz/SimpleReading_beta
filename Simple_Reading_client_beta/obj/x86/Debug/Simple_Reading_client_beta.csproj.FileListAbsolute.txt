@@ -8,3 +8,6 @@ c:\documents and settings\cheat\мои документы\visual studio 2010\Pro
 c:\documents and settings\cheat\мои документы\visual studio 2010\Projects\Simple_Reading_client_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.pdb
 c:\documents and settings\cheat\мои документы\visual studio 2010\Projects\Simple_Reading_client_beta\Simple_Reading_client_beta\bin\Debug\Simple_Reading_client_beta.exe.config
 C:\Documents and Settings\cheat\мои документы\visual studio 2010\Projects\Simple_Reading_client_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.Form1.resources
+D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\bin\Debug\Simple_Reading_client_beta.exe.config
+D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.exe
+D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.pdb
