@@ -100,6 +100,7 @@ namespace Simple_Reading_client_beta
             da.SelectCommand = getBook;
             da = new SqlDataAdapter(getBook);
             da.Fill(set, "book");
+			//aaa
 
 
             table = set.Tables["book"];
