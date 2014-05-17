@@ -97,11 +97,19 @@ namespace Simple_Reading_client_beta
             da.Fill(set, "book");
 
             SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
-            da.SelectCommand = getBook;
-            da = new SqlDataAdapter(getBook);
-            da.Fill(set, "book");
-			//aaa
+            da.SelectCommand = getComments;
+            da = new SqlDataAdapter(getComments);
+            da.Fill(set, "book1");
 
+
+            foreach (DataRow row in set.Tables["book1"].Rows)
+            {
+                MessageBox.Show(row["comment_text"].ToString());
+            }
+            foreach (DataRow row in set.Tables["book"].Rows)
+            {
+                MessageBox.Show(row["title"].ToString());
+            }
 
             table = set.Tables["book"];
             //var q = from t in table.AsEnumerable()
