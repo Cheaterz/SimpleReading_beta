@@ -11,7 +11,8 @@ namespace Simple_Reading_client_beta
         public string Notes { set; get; }
         public int Id { get; set; }
         public string Title { get; set; }
-
+        public string Cat { get; set; }
+        public string Tags { get; set; }
 
         public ArticleHelper(string text, string n)
         {

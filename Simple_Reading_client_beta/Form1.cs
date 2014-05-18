@@ -38,6 +38,7 @@ namespace Simple_Reading_client_beta
             InitializeComponent();
             label1.ForeColor = Color.Red;
             listView1.Columns.Add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            listView1.Columns[0].Width = 250;
             //listView1.Columns.Add("bbbbbbbbbbbbbbbbbbbb");
         }
 
@@ -122,7 +123,36 @@ namespace Simple_Reading_client_beta
             }
 
             //достать тэги и категории
-
+            SqlCommand getCat = new SqlCommand("SELECT distinct c.title FROM categories c, articles_cats ac WHERE c.id = ac.idcat AND ac.idarticle=@p1", conn);
+            da.SelectCommand = getComments;
+            SqlParameter p1;
+            p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
+            i = 0;
+            foreach (ListViewItem it in listView1.Items)
+            {
+                p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
+                da = new SqlDataAdapter(getCat);
+                da.Fill(set, "cats");
+                (listView1.Items[i].Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
+                i++;
+                set.Tables["cats"].Clear();
+            }
+            SqlCommand getTag = new SqlCommand("SELECT t.tag_title FROM tags t, articles_cats ac WHERE t.id = ac.idtag AND ac.idarticle=@p1", conn);
+            da.SelectCommand = getTag;
+            p1 = getTag.Parameters.Add("@p1", SqlDbType.Int);
+            i = 0;
+            foreach (ListViewItem it in listView1.Items)
+            {
+                p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
+                da = new SqlDataAdapter(getTag);
+                da.Fill(set, "cats");
+                foreach (DataRow row in set.Tables["cats"].Rows)
+                {
+                    (listView1.Items[i].Tag as ArticleHelper).Tags += row["tag_title"] + ", ";
+                }
+                i++;
+                set.Tables["cats"].Clear();
+            }
 
             //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
             //da.SelectCommand = getComments;
@@ -178,6 +208,9 @@ namespace Simple_Reading_client_beta
             ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
             richTextBox1.Text = ah.Text;
             tbNotes.Text = ah.Notes;
+            string cat = ah.Cat;
+            lbCat.Text = "Категория: " + cat;
+            lbTags.Text = "Теги: " + ah.Tags;
             //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
             //int i = (int)listView1.SelectedItems[0].Index;
             //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
