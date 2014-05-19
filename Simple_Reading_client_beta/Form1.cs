@@ -16,6 +16,7 @@ using System.Configuration;
  * добавление статей (или изменение тэгов, заметок и т.д.)
  * внешний вид статьи!!!!!!
  * плагин?
+ * try-catch (таймаут)
  * 
  * отдельные функции коннекта, аутентификации и т.д.
  * на мскл сервере - юзер с правами доступа только к функциям проверки юзера
@@ -36,7 +37,7 @@ namespace Simple_Reading_client_beta
         public Form1()
         {
             InitializeComponent();
-            label1.ForeColor = Color.Red;
+            //label1.ForeColor = Color.Red;
             listView1.Columns.Add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             listView1.Columns[0].Width = listView1.Width;
             //listView1.Columns.Add("bbbbbbbbbbbbbbbbbbbb");
@@ -46,25 +47,25 @@ namespace Simple_Reading_client_beta
         {
             string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
             conn = new SqlConnection(cs);
-            string login = tbLogin.Text;
-            string pass = tbPassword.Text;
+            //string login = tbLogin.Text;
+            //string pass = tbPassword.Text;
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
             SqlCommand comm = new SqlCommand(sql, conn);
-            (comm as SqlCommand).Parameters.Add("@log", SqlDbType.VarChar).Value = login;
-            (comm as SqlCommand).Parameters.Add("@passw", SqlDbType.VarChar).Value = pass;
+            //(comm as SqlCommand).Parameters.Add("@log", SqlDbType.VarChar).Value = login;
+            //(comm as SqlCommand).Parameters.Add("@passw", SqlDbType.VarChar).Value = pass;
 
             try
             {
-                conn.Open();
-                if ((int)comm.ExecuteScalar() == 1)
-                    panel1.Visible = false;
-                else
-                    label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
+                //conn.Open();
+                //if ((int)comm.ExecuteScalar() == 1)
+                //    panel1.Visible = false;
+                //else
+                //    label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
             }
             catch (Exception ex)
             {
-                label1.Text = ex.Message;
+                //label1.Text = ex.Message;
             }
             finally
             {
@@ -88,7 +89,7 @@ namespace Simple_Reading_client_beta
             UserHelper uh = new UserHelper(1);
 
             set = new DataSet();
-            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
             conn = new SqlConnection(cs);
             //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
             da = new SqlDataAdapter();

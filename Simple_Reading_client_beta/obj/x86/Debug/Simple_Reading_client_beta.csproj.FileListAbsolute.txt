@@ -18,3 +18,13 @@ D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Read
 D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.Properties.Resources.resources
 D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\GenerateResource.read.1.tlog
 D:\MyGit\SimpleReading_beta\Simple_Reading_client_beta\obj\x86\Debug\GenerateResource.write.1.tlog
+d:\Codong\VS10\C#\Simple_Reading_client_beta\bin\Debug\Simple_Reading_client_beta.exe.config
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.exe
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.pdb
+d:\Codong\VS10\C#\Simple_Reading_client_beta\bin\Debug\Simple_Reading_client_beta.exe
+d:\Codong\VS10\C#\Simple_Reading_client_beta\bin\Debug\Simple_Reading_client_beta.pdb
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\ResolveAssemblyReference.cache
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.Form1.resources
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\Simple_Reading_client_beta.Properties.Resources.resources
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\GenerateResource.read.1.tlog
+d:\Codong\VS10\C#\Simple_Reading_client_beta\obj\x86\Debug\GenerateResource.write.1.tlog

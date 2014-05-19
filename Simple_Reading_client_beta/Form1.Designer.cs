@@ -28,70 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btLogin = new System.Windows.Forms.Button();
-            this.tbPassword = new System.Windows.Forms.TextBox();
-            this.tbLogin = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lbLink = new System.Windows.Forms.Label();
+            this.lbDate = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
             this.lbCat = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tbText = new System.Windows.Forms.RichTextBox();
-            this.lbDate = new System.Windows.Forms.Label();
-            this.lbLink = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.btLogin);
-            this.panel1.Controls.Add(this.tbPassword);
-            this.panel1.Controls.Add(this.tbLogin);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 534);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 26);
-            this.panel1.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(58, 182);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 3;
-            // 
-            // btLogin
-            // 
-            this.btLogin.Location = new System.Drawing.Point(61, 128);
-            this.btLogin.Name = "btLogin";
-            this.btLogin.Size = new System.Drawing.Size(100, 23);
-            this.btLogin.TabIndex = 2;
-            this.btLogin.Text = "Login";
-            this.btLogin.UseVisualStyleBackColor = true;
-            // 
-            // tbPassword
-            // 
-            this.tbPassword.Location = new System.Drawing.Point(61, 77);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(100, 20);
-            this.tbPassword.TabIndex = 1;
-            this.tbPassword.UseSystemPasswordChar = true;
-            // 
-            // tbLogin
-            // 
-            this.tbLogin.Location = new System.Drawing.Point(58, 3);
-            this.tbLogin.Name = "tbLogin";
-            this.tbLogin.Size = new System.Drawing.Size(100, 20);
-            this.tbLogin.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -109,13 +66,30 @@
             this.panel2.Controls.Add(this.lbCat);
             this.panel2.Controls.Add(this.tbNotes);
             this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.listView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 24);
+            this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 560);
+            this.panel2.Size = new System.Drawing.Size(258, 416);
             this.panel2.TabIndex = 4;
+            // 
+            // lbLink
+            // 
+            this.lbLink.AutoSize = true;
+            this.lbLink.Location = new System.Drawing.Point(26, 489);
+            this.lbLink.Name = "lbLink";
+            this.lbLink.Size = new System.Drawing.Size(46, 13);
+            this.lbLink.TabIndex = 10;
+            this.lbLink.Text = "Ссылка";
+            // 
+            // lbDate
+            // 
+            this.lbDate.AutoSize = true;
+            this.lbDate.Location = new System.Drawing.Point(27, 462);
+            this.lbDate.Name = "lbDate";
+            this.lbDate.Size = new System.Drawing.Size(33, 13);
+            this.lbDate.TabIndex = 9;
+            this.lbDate.Text = "Дата";
             // 
             // lbTags
             // 
@@ -159,7 +133,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(200, 245);
+            this.listView1.Size = new System.Drawing.Size(258, 245);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -168,57 +142,90 @@
             // webBrowser1
             // 
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(200, 24);
+            this.webBrowser1.Location = new System.Drawing.Point(0, 24);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(515, 560);
+            this.webBrowser1.Size = new System.Drawing.Size(715, 560);
             this.webBrowser1.TabIndex = 5;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tbText);
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Location = new System.Drawing.Point(114, 27);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(691, 416);
+            this.panel1.TabIndex = 7;
             // 
             // tbText
             // 
-            this.tbText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbText.Location = new System.Drawing.Point(200, 24);
+            this.tbText.Location = new System.Drawing.Point(378, 206);
             this.tbText.Name = "tbText";
-            this.tbText.ReadOnly = true;
-            this.tbText.Size = new System.Drawing.Size(515, 560);
-            this.tbText.TabIndex = 6;
+            this.tbText.Size = new System.Drawing.Size(100, 96);
+            this.tbText.TabIndex = 5;
             this.tbText.Text = "";
             // 
-            // lbDate
+            // panel3
             // 
-            this.lbDate.AutoSize = true;
-            this.lbDate.Location = new System.Drawing.Point(27, 462);
-            this.lbDate.Name = "lbDate";
-            this.lbDate.Size = new System.Drawing.Size(33, 13);
-            this.lbDate.TabIndex = 9;
-            this.lbDate.Text = "Дата";
+            this.panel3.Controls.Add(this.button2);
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.textBox2);
+            this.panel3.Controls.Add(this.textBox1);
+            this.panel3.Location = new System.Drawing.Point(62, 159);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(493, 236);
+            this.panel3.TabIndex = 11;
             // 
-            // lbLink
+            // textBox1
             // 
-            this.lbLink.AutoSize = true;
-            this.lbLink.Location = new System.Drawing.Point(26, 489);
-            this.lbLink.Name = "lbLink";
-            this.lbLink.Size = new System.Drawing.Size(46, 13);
-            this.lbLink.TabIndex = 10;
-            this.lbLink.Text = "Ссылка";
+            this.textBox1.Location = new System.Drawing.Point(307, 214);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 0;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(307, 270);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(320, 316);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "label1";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(307, 367);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(715, 584);
-            this.Controls.Add(this.tbText);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.webBrowser1);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,22 +233,23 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btLogin;
-        private System.Windows.Forms.TextBox tbPassword;
-        private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.RichTextBox tbText;
         private System.Windows.Forms.RichTextBox tbNotes;
         private System.Windows.Forms.Label lbTags;
         private System.Windows.Forms.Label lbCat;
         private System.Windows.Forms.Label lbLink;
         private System.Windows.Forms.Label lbDate;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RichTextBox tbText;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
 
     }
 }
