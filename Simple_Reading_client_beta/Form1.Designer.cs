@@ -35,13 +35,15 @@
             this.tbLogin = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lbTags = new System.Windows.Forms.Label();
+            this.lbCat = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.lbCat = new System.Windows.Forms.Label();
-            this.lbTags = new System.Windows.Forms.Label();
+            this.tbText = new System.Windows.Forms.RichTextBox();
+            this.lbDate = new System.Windows.Forms.Label();
+            this.lbLink = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -101,6 +103,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.lbLink);
+            this.panel2.Controls.Add(this.lbDate);
             this.panel2.Controls.Add(this.lbTags);
             this.panel2.Controls.Add(this.lbCat);
             this.panel2.Controls.Add(this.tbNotes);
@@ -113,9 +117,27 @@
             this.panel2.Size = new System.Drawing.Size(200, 560);
             this.panel2.TabIndex = 4;
             // 
+            // lbTags
+            // 
+            this.lbTags.AutoSize = true;
+            this.lbTags.Location = new System.Drawing.Point(27, 433);
+            this.lbTags.Name = "lbTags";
+            this.lbTags.Size = new System.Drawing.Size(31, 13);
+            this.lbTags.TabIndex = 8;
+            this.lbTags.Text = "Тэги";
+            // 
+            // lbCat
+            // 
+            this.lbCat.AutoSize = true;
+            this.lbCat.Location = new System.Drawing.Point(26, 409);
+            this.lbCat.Name = "lbCat";
+            this.lbCat.Size = new System.Drawing.Size(66, 13);
+            this.lbCat.TabIndex = 7;
+            this.lbCat.Text = "Категории: ";
+            // 
             // tbNotes
             // 
-            this.tbNotes.Location = new System.Drawing.Point(0, 341);
+            this.tbNotes.Location = new System.Drawing.Point(0, 292);
             this.tbNotes.Name = "tbNotes";
             this.tbNotes.Size = new System.Drawing.Size(200, 96);
             this.tbNotes.TabIndex = 6;
@@ -123,7 +145,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(58, 295);
+            this.button1.Location = new System.Drawing.Point(58, 263);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -137,7 +159,7 @@
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(200, 277);
+            this.listView1.Size = new System.Drawing.Size(200, 245);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -152,40 +174,40 @@
             this.webBrowser1.Size = new System.Drawing.Size(515, 560);
             this.webBrowser1.TabIndex = 5;
             // 
-            // richTextBox1
+            // tbText
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(200, 24);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(515, 560);
-            this.richTextBox1.TabIndex = 6;
-            this.richTextBox1.Text = "";
+            this.tbText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbText.Location = new System.Drawing.Point(200, 24);
+            this.tbText.Name = "tbText";
+            this.tbText.ReadOnly = true;
+            this.tbText.Size = new System.Drawing.Size(515, 560);
+            this.tbText.TabIndex = 6;
+            this.tbText.Text = "";
             // 
-            // lbCat
+            // lbDate
             // 
-            this.lbCat.AutoSize = true;
-            this.lbCat.Location = new System.Drawing.Point(23, 444);
-            this.lbCat.Name = "lbCat";
-            this.lbCat.Size = new System.Drawing.Size(66, 13);
-            this.lbCat.TabIndex = 7;
-            this.lbCat.Text = "Категории: ";
+            this.lbDate.AutoSize = true;
+            this.lbDate.Location = new System.Drawing.Point(27, 462);
+            this.lbDate.Name = "lbDate";
+            this.lbDate.Size = new System.Drawing.Size(33, 13);
+            this.lbDate.TabIndex = 9;
+            this.lbDate.Text = "Дата";
             // 
-            // lbTags
+            // lbLink
             // 
-            this.lbTags.AutoSize = true;
-            this.lbTags.Location = new System.Drawing.Point(26, 493);
-            this.lbTags.Name = "lbTags";
-            this.lbTags.Size = new System.Drawing.Size(31, 13);
-            this.lbTags.TabIndex = 8;
-            this.lbTags.Text = "Тэги";
+            this.lbLink.AutoSize = true;
+            this.lbLink.Location = new System.Drawing.Point(26, 489);
+            this.lbLink.Name = "lbLink";
+            this.lbLink.Size = new System.Drawing.Size(46, 13);
+            this.lbLink.TabIndex = 10;
+            this.lbLink.Text = "Ссылка";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(715, 584);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.tbText);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
@@ -214,10 +236,12 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox tbText;
         private System.Windows.Forms.RichTextBox tbNotes;
         private System.Windows.Forms.Label lbTags;
         private System.Windows.Forms.Label lbCat;
+        private System.Windows.Forms.Label lbLink;
+        private System.Windows.Forms.Label lbDate;
 
     }
 }

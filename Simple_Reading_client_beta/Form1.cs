@@ -12,7 +12,6 @@ using System.Configuration;
 /*
  * TODO:
  * класс Article?
- * многотабличный запрос, чтобы вытащить комменты, дату, заголовок, текст, тэги, категорию и заметки
  * добавление статей (или изменение тэгов, заметок и т.д.)
  * внешний вид статьи!!!!!!
  * плагин?
@@ -38,7 +37,7 @@ namespace Simple_Reading_client_beta
             InitializeComponent();
             label1.ForeColor = Color.Red;
             listView1.Columns.Add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            listView1.Columns[0].Width = 250;
+            listView1.Columns[0].Width = listView1.Width;
             //listView1.Columns.Add("bbbbbbbbbbbbbbbbbbbb");
         }
 
@@ -119,6 +118,8 @@ namespace Simple_Reading_client_beta
                 listView1.Items.Add(row["title"].ToString());
                 listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString(), note);
                 (listView1.Items[i].Tag as ArticleHelper).Id = (int)row["id"];
+                (listView1.Items[i].Tag as ArticleHelper).Link = row["link_original"].ToString();
+                (listView1.Items[i].Tag as ArticleHelper).Date = row["date_add"].ToString();
                 i++;
             }
 
@@ -206,11 +207,13 @@ namespace Simple_Reading_client_beta
             if (listView1.SelectedIndices.Count < 1)
                 return;
             ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
-            richTextBox1.Text = ah.Text;
+            tbText.Text = ah.Text;
             tbNotes.Text = ah.Notes;
             string cat = ah.Cat;
             lbCat.Text = "Категория: " + cat;
             lbTags.Text = "Теги: " + ah.Tags;
+            lbLink.Text = ah.Link;
+            lbDate.Text = ah.Date;
             //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
             //int i = (int)listView1.SelectedItems[0].Index;
             //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());

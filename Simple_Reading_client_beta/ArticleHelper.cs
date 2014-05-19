@@ -13,6 +13,8 @@ namespace Simple_Reading_client_beta
         public string Title { get; set; }
         public string Cat { get; set; }
         public string Tags { get; set; }
+        public string Date { get; set; }
+        public string Link { get; set; }
 
         public ArticleHelper(string text, string n)
         {
