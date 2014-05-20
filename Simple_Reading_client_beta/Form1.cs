@@ -33,7 +33,8 @@ namespace Simple_Reading_client_beta
         DataSet set = null;
         SqlDataAdapter da = null;
         DataTable table = null;
-        UserHelper user;
+        UserHelper user = null;
+        bool logged = false;
 
         public Form1()
         {
@@ -68,12 +69,13 @@ namespace Simple_Reading_client_beta
                 conn.Open();
                 if ((int)comm.ExecuteScalar() == 1)
                 {
+                    sql = @"SELECT id FROM users WHERE ulogin = '" + login + "'";
+                    comm = new SqlCommand(sql, conn);
+                    user = new UserHelper((int)comm.ExecuteScalar());
+                    logged = true;
                     plLogin.Visible = false;
                     this.MinimizeBox = true;
                     this.MaximizeBox = true;
-                    sql = @"SELECT id FROM users WHERE ulogin = " + login;
-                    comm = new SqlCommand(sql, conn);
-                    user = new UserHelper((int)comm.ExecuteScalar());
                 }
                 else
                     label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
@@ -116,122 +118,127 @@ namespace Simple_Reading_client_beta
 
         private void plLogin_VisibleChanged(object sender, EventArgs e)
         {
-            //richTextBox1.BackColor = Color.AliceBlue;
-            //richTextBox1.ForeColor = Color.Beige;
-            listView1.Items.Clear();
-
-            set = new DataSet();
-            string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
-            conn = new SqlConnection(cs);
-            //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
-            da = new SqlDataAdapter();
-            //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
-
-            //получим актуальные данные со всех таблиц
-            SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + user.Id, conn);
-            da.SelectCommand = getBook;
-            da = new SqlDataAdapter(getBook);
-            da.Fill(set, "book");
-
-            SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
-            da.SelectCommand = getComments;
-            da = new SqlDataAdapter(getComments);
-            da.Fill(set, "notes");
-
-            int i = 0;
-            foreach (DataRow row in set.Tables["book"].Rows)
+            if (!logged)
             {
-                string note = "";
-                foreach (DataRow rowNote in set.Tables["notes"].Rows)
+                return;
+            }
+                //richTextBox1.BackColor = Color.AliceBlue;
+                //richTextBox1.ForeColor = Color.Beige;
+                listView1.Items.Clear();
+
+                set = new DataSet();
+                string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
+                conn = new SqlConnection(cs);
+                //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
+                da = new SqlDataAdapter();
+                //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
+
+                //получим актуальные данные со всех таблиц
+                SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + user.Id, conn);
+                da.SelectCommand = getBook;
+                da = new SqlDataAdapter(getBook);
+                da.Fill(set, "book");
+
+                SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
+                da.SelectCommand = getComments;
+                da = new SqlDataAdapter(getComments);
+                da.Fill(set, "notes");
+
+                int i = 0;
+                foreach (DataRow row in set.Tables["book"].Rows)
                 {
-                    if ((int)rowNote["idarticle"] == (int)row["id"])
+                    string note = "";
+                    foreach (DataRow rowNote in set.Tables["notes"].Rows)
                     {
-                        note = rowNote["note_text"].ToString();
+                        if ((int)rowNote["idarticle"] == (int)row["id"])
+                        {
+                            note = rowNote["note_text"].ToString();
+                        }
                     }
+                    listView1.Items.Add(row["title"].ToString());
+                    listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString(), note);
+                    (listView1.Items[i].Tag as ArticleHelper).Id = (int)row["id"];
+                    (listView1.Items[i].Tag as ArticleHelper).Link = row["link_original"].ToString();
+                    (listView1.Items[i].Tag as ArticleHelper).Date = row["date_add"].ToString();
+                    i++;
                 }
-                listView1.Items.Add(row["title"].ToString());
-                listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString(), note);
-                (listView1.Items[i].Tag as ArticleHelper).Id = (int)row["id"];
-                (listView1.Items[i].Tag as ArticleHelper).Link = row["link_original"].ToString();
-                (listView1.Items[i].Tag as ArticleHelper).Date = row["date_add"].ToString();
-                i++;
-            }
 
-            //достать тэги и категории
-            SqlCommand getCat = new SqlCommand("SELECT distinct c.title FROM categories c, articles_cats ac WHERE c.id = ac.idcat AND ac.idarticle=@p1", conn);
-            da.SelectCommand = getComments;
-            SqlParameter p1;
-            p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
-            i = 0;
-            foreach (ListViewItem it in listView1.Items)
-            {
-                p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
-                da = new SqlDataAdapter(getCat);
-                da.Fill(set, "cats");
-                (listView1.Items[i].Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
-                i++;
-                set.Tables["cats"].Clear();
-            }
-            SqlCommand getTag = new SqlCommand("SELECT t.tag_title FROM tags t, articles_cats ac WHERE t.id = ac.idtag AND ac.idarticle=@p1", conn);
-            da.SelectCommand = getTag;
-            p1 = getTag.Parameters.Add("@p1", SqlDbType.Int);
-            i = 0;
-            foreach (ListViewItem it in listView1.Items)
-            {
-                p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
-                da = new SqlDataAdapter(getTag);
-                da.Fill(set, "cats");
-                foreach (DataRow row in set.Tables["cats"].Rows)
+                //достать тэги и категории
+                SqlCommand getCat = new SqlCommand("SELECT distinct c.title FROM categories c, articles_cats ac WHERE c.id = ac.idcat AND ac.idarticle=@p1", conn);
+                da.SelectCommand = getComments;
+                SqlParameter p1;
+                p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
+                i = 0;
+                foreach (ListViewItem it in listView1.Items)
                 {
-                    (listView1.Items[i].Tag as ArticleHelper).Tags += row["tag_title"] + ", ";
+                    p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
+                    da = new SqlDataAdapter(getCat);
+                    da.Fill(set, "cats");
+                    (listView1.Items[i].Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
+                    i++;
+                    set.Tables["cats"].Clear();
                 }
-                i++;
-                set.Tables["cats"].Clear();
-            }
+                SqlCommand getTag = new SqlCommand("SELECT t.tag_title FROM tags t, articles_cats ac WHERE t.id = ac.idtag AND ac.idarticle=@p1", conn);
+                da.SelectCommand = getTag;
+                p1 = getTag.Parameters.Add("@p1", SqlDbType.Int);
+                i = 0;
+                foreach (ListViewItem it in listView1.Items)
+                {
+                    p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
+                    da = new SqlDataAdapter(getTag);
+                    da.Fill(set, "cats");
+                    foreach (DataRow row in set.Tables["cats"].Rows)
+                    {
+                        (listView1.Items[i].Tag as ArticleHelper).Tags += row["tag_title"] + ", ";
+                    }
+                    i++;
+                    set.Tables["cats"].Clear();
+                }
 
-            //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
-            //da.SelectCommand = getComments;
-            //da = new SqlDataAdapter(getComments);
-            //da.Fill(set, "comments");
+                //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
+                //da.SelectCommand = getComments;
+                //da = new SqlDataAdapter(getComments);
+                //da.Fill(set, "comments");
 
-            //foreach (DataRow row in set.Tables["comments"].Rows)
-            //{
-            //    MessageBox.Show(row["comment_text"].ToString());
-            //}
-            //foreach (DataRow row in set.Tables["book"].Rows)
-            //{
-            //    MessageBox.Show(row["title"].ToString());
-            //}
+                //foreach (DataRow row in set.Tables["comments"].Rows)
+                //{
+                //    MessageBox.Show(row["comment_text"].ToString());
+                //}
+                //foreach (DataRow row in set.Tables["book"].Rows)
+                //{
+                //    MessageBox.Show(row["title"].ToString());
+                //}
 
-            table = set.Tables["book"];
-            //var q = from t in table.AsEnumerable()
-            //        where t.Field<int>("iduser") == 1
-            //        select new 
-            //        {
-            //            Title = t.Field<string>("title"),
-            //            Text = t.Field<string>("article_text"),
-            //        };
+                table = set.Tables["book"];
+                //var q = from t in table.AsEnumerable()
+                //        where t.Field<int>("iduser") == 1
+                //        select new 
+                //        {
+                //            Title = t.Field<string>("title"),
+                //            Text = t.Field<string>("article_text"),
+                //        };
 
-            //int i = 0;
-            //foreach (DataRow row in set.Tables["book"].Rows)
-            //{
-            //    listView1.Items.Add(row["title"].ToString());
-            //    listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString());//, row["Notes"].ToString());
-            //    //listView1.Items[i].Tag = row["article_text"].ToString();
-            //    //SubItems.Add(row["iduser"].ToString());
-            //    i++;
-            //    //MessageBox.Show(row["title"].ToString());
-            //}
+                //int i = 0;
+                //foreach (DataRow row in set.Tables["book"].Rows)
+                //{
+                //    listView1.Items.Add(row["title"].ToString());
+                //    listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString());//, row["Notes"].ToString());
+                //    //listView1.Items[i].Tag = row["article_text"].ToString();
+                //    //SubItems.Add(row["iduser"].ToString());
+                //    i++;
+                //    //MessageBox.Show(row["title"].ToString());
+                //}
 
-            //var res = from n in set.Tables[0].Rows
-            //          select n;
+                //var res = from n in set.Tables[0].Rows
+                //          select n;
 
-            //int i = 0;
-            //foreach (var article in q)
-            //{
-            //    listView1.Items.Add(article.Title);
-            //    listView1.Items[i].Tag = article.Text;
-            //    i++;
+                //int i = 0;
+                //foreach (var article in q)
+                //{
+                //    listView1.Items.Add(article.Title);
+                //    listView1.Items[i].Tag = article.Text;
+                //    i++;
+                //}
             //}
         }
     }
