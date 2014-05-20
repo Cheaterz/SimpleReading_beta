@@ -56,7 +56,7 @@ namespace Simple_Reading_client_beta
 
         private void login(string login, string pass)
         {
-            string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
             conn = new SqlConnection(cs);
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
@@ -127,14 +127,14 @@ namespace Simple_Reading_client_beta
                 listView1.Items.Clear();
 
                 set = new DataSet();
-                string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
+                string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
                 conn = new SqlConnection(cs);
                 //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
                 da = new SqlDataAdapter();
                 //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
 
                 //получим актуальные данные со всех таблиц
-                SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + user.Id, conn);
+                SqlCommand getBook = new SqlCommand("SELECT id, title, article_text, iduser, convert(varchar(15),date_add,105) as 'date_add', link_original FROM articles WHERE iduser=" + user.Id, conn);
                 da.SelectCommand = getBook;
                 da = new SqlDataAdapter(getBook);
                 da.Fill(set, "book");
