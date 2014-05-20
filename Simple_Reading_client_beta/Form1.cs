@@ -41,19 +41,21 @@ namespace Simple_Reading_client_beta
             tbText.Dock = DockStyle.Fill;
             panel1.Dock = DockStyle.Fill;
             label1.ForeColor = Color.Red;
-            listView1.Columns.Add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            listView1.Columns.Add("Название статьи");
             listView1.Columns[0].Width = listView1.Width;
-            //listView1.Columns.Add("bbbbbbbbbbbbbbbbbbbb");
             this.MinimizeBox = false;
             this.MaximizeBox = false;
         }
 
         private void btLogin_Click(object sender, EventArgs e)
         {
+            login(tbLogin.Text, tbPassword.Text);
+        }
+
+        private void login(string login, string pass)
+        {
             string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
             conn = new SqlConnection(cs);
-            string login = tbLogin.Text;
-            string pass = tbPassword.Text;
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
             SqlCommand comm = new SqlCommand(sql, conn);
@@ -78,22 +80,17 @@ namespace Simple_Reading_client_beta
             }
             finally
             {
-                conn.Close();
+                if(conn != null)
+                    conn.Close();
             }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (conn != null) //|| conn.State == ConnectionState.Open)
+            if (conn != null)
             {
                 conn.Close();
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
