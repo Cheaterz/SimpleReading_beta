@@ -37,35 +37,44 @@ namespace Simple_Reading_client_beta
         public Form1()
         {
             InitializeComponent();
-            //label1.ForeColor = Color.Red;
+            plLogin.Dock = DockStyle.Fill;
+            tbText.Dock = DockStyle.Fill;
+            panel1.Dock = DockStyle.Fill;
+            label1.ForeColor = Color.Red;
             listView1.Columns.Add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             listView1.Columns[0].Width = listView1.Width;
             //listView1.Columns.Add("bbbbbbbbbbbbbbbbbbbb");
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
         }
 
         private void btLogin_Click(object sender, EventArgs e)
         {
-            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
             conn = new SqlConnection(cs);
-            //string login = tbLogin.Text;
-            //string pass = tbPassword.Text;
+            string login = tbLogin.Text;
+            string pass = tbPassword.Text;
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
             SqlCommand comm = new SqlCommand(sql, conn);
-            //(comm as SqlCommand).Parameters.Add("@log", SqlDbType.VarChar).Value = login;
-            //(comm as SqlCommand).Parameters.Add("@passw", SqlDbType.VarChar).Value = pass;
+            (comm as SqlCommand).Parameters.Add("@log", SqlDbType.VarChar).Value = login;
+            (comm as SqlCommand).Parameters.Add("@passw", SqlDbType.VarChar).Value = pass;
 
             try
             {
-                //conn.Open();
-                //if ((int)comm.ExecuteScalar() == 1)
-                //    panel1.Visible = false;
-                //else
-                //    label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
+                conn.Open();
+                if ((int)comm.ExecuteScalar() == 1)
+                {
+                    plLogin.Visible = false;
+                    this.MinimizeBox = true;
+                    this.MaximizeBox = true;
+                }
+                else
+                    label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
             }
             catch (Exception ex)
             {
-                //label1.Text = ex.Message;
+                label1.Text = ex.Message;
             }
             finally
             {
@@ -83,6 +92,29 @@ namespace Simple_Reading_client_beta
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count < 1)
+                return;
+            ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
+            tbText.Text = ah.Text;
+            tbNotes.Text = ah.Notes;
+            string cat = ah.Cat;
+            lbCat.Text = "Категория: " + cat;
+            lbTags.Text = "Теги: " + ah.Tags;
+            lbLink.Text = ah.Link;
+            lbDate.Text = ah.Date;
+            //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
+            //int i = (int)listView1.SelectedItems[0].Index;
+            //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
+        }
+
+        private void plLogin_VisibleChanged(object sender, EventArgs e)
+        {
             //richTextBox1.BackColor = Color.AliceBlue;
             //richTextBox1.ForeColor = Color.Beige;
             listView1.Items.Clear();
@@ -94,7 +126,7 @@ namespace Simple_Reading_client_beta
             //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
             da = new SqlDataAdapter();
             //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
-            
+
             //получим актуальные данные со всех таблиц
             SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + uh.Id, conn);
             da.SelectCommand = getBook;
@@ -201,24 +233,6 @@ namespace Simple_Reading_client_beta
             //    listView1.Items[i].Tag = article.Text;
             //    i++;
             //}
-
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView1.SelectedIndices.Count < 1)
-                return;
-            ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
-            tbText.Text = ah.Text;
-            tbNotes.Text = ah.Notes;
-            string cat = ah.Cat;
-            lbCat.Text = "Категория: " + cat;
-            lbTags.Text = "Теги: " + ah.Tags;
-            lbLink.Text = ah.Link;
-            lbDate.Text = ah.Date;
-            //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
-            //int i = (int)listView1.SelectedItems[0].Index;
-            //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
         }
     }
 }
