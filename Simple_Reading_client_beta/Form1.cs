@@ -17,6 +17,7 @@ using System.Configuration;
  * внешний вид статьи!!!!!!
  * плагин?
  * try-catch (таймаут)
+ * функция filter?
  * 
  * отдельные функции коннекта, аутентификации и т.д.
  * на мскл сервере - юзер с правами доступа только к функциям проверки юзера
@@ -32,7 +33,7 @@ namespace Simple_Reading_client_beta
         SqlConnection conn = null;
         DataSet set = null;
         SqlDataAdapter da = null;
-        DataTable table = null;
+        //DataTable table = null;
         UserHelper user = null;
         bool logged = false;
 
@@ -43,6 +44,8 @@ namespace Simple_Reading_client_beta
             tbText.Dock = DockStyle.Fill;
             panel1.Dock = DockStyle.Fill;
             label1.ForeColor = Color.Red;
+            tbText.BackColor = Color.AliceBlue;
+            //tbText.ForeColor = Color.Beige;
             listView1.Columns.Add("Название статьи");
             listView1.Columns[0].Width = listView1.Width;
             this.MinimizeBox = false;
@@ -122,27 +125,15 @@ namespace Simple_Reading_client_beta
             {
                 return;
             }
-                //richTextBox1.BackColor = Color.AliceBlue;
-                //richTextBox1.ForeColor = Color.Beige;
-                listView1.Items.Clear();
+            listView1.Items.Clear();
 
-                set = new DataSet();
-                string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
-                conn = new SqlConnection(cs);
-                //da = new SqlDataAdapter("SELECT * FROM articles WHERE iduser="+uh.Id, conn);
-                da = new SqlDataAdapter();
-                //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
+            set = new DataSet();
+            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            conn = new SqlConnection(cs);
+            da = new SqlDataAdapter();
 
-                //получим актуальные данные со всех таблиц
-                SqlCommand getBook = new SqlCommand("SELECT id, title, article_text, iduser, convert(varchar(15),date_add,105) as 'date_add', link_original FROM articles WHERE iduser=" + user.Id, conn);
-                da.SelectCommand = getBook;
-                da = new SqlDataAdapter(getBook);
-                da.Fill(set, "book");
-
-                SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
-                da.SelectCommand = getComments;
-                da = new SqlDataAdapter(getComments);
-                da.Fill(set, "notes");
+            //получим актуальные данные со всех таблиц
+            getData(da, conn, set);
 
                 int i = 0;
                 foreach (DataRow row in set.Tables["book"].Rows)
@@ -165,17 +156,17 @@ namespace Simple_Reading_client_beta
 
                 //достать тэги и категории
                 SqlCommand getCat = new SqlCommand("SELECT distinct c.title FROM categories c, articles_cats ac WHERE c.id = ac.idcat AND ac.idarticle=@p1", conn);
-                da.SelectCommand = getComments;
+                da.SelectCommand = getCat;
                 SqlParameter p1;
                 p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
-                i = 0;
-                foreach (ListViewItem it in listView1.Items)
+                
+                foreach (ListViewItem lt in listView1.Items)
                 {
-                    p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
+                    p1.Value = (lt.Tag as ArticleHelper).Id;
                     da = new SqlDataAdapter(getCat);
                     da.Fill(set, "cats");
-                    (listView1.Items[i].Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
-                    i++;
+                    (lt.Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
+                    
                     set.Tables["cats"].Clear();
                 }
                 SqlCommand getTag = new SqlCommand("SELECT t.tag_title FROM tags t, articles_cats ac WHERE t.id = ac.idtag AND ac.idarticle=@p1", conn);
@@ -209,37 +200,19 @@ namespace Simple_Reading_client_beta
                 //    MessageBox.Show(row["title"].ToString());
                 //}
 
-                table = set.Tables["book"];
-                //var q = from t in table.AsEnumerable()
-                //        where t.Field<int>("iduser") == 1
-                //        select new 
-                //        {
-                //            Title = t.Field<string>("title"),
-                //            Text = t.Field<string>("article_text"),
-                //        };
+        }
 
-                //int i = 0;
-                //foreach (DataRow row in set.Tables["book"].Rows)
-                //{
-                //    listView1.Items.Add(row["title"].ToString());
-                //    listView1.Items[i].Tag = new ArticleHelper(row["article_text"].ToString());//, row["Notes"].ToString());
-                //    //listView1.Items[i].Tag = row["article_text"].ToString();
-                //    //SubItems.Add(row["iduser"].ToString());
-                //    i++;
-                //    //MessageBox.Show(row["title"].ToString());
-                //}
+        private void getData(SqlDataAdapter da, SqlConnection conn, DataSet set)
+        {
+            SqlCommand getBook = new SqlCommand("SELECT id, title, article_text, iduser, convert(varchar(15),date_add,105) as 'date_add', link_original FROM articles WHERE iduser=" + user.Id, conn);
+            da.SelectCommand = getBook;
+            da = new SqlDataAdapter(getBook);
+            da.Fill(set, "book");
 
-                //var res = from n in set.Tables[0].Rows
-                //          select n;
-
-                //int i = 0;
-                //foreach (var article in q)
-                //{
-                //    listView1.Items.Add(article.Title);
-                //    listView1.Items[i].Tag = article.Text;
-                //    i++;
-                //}
-            //}
+            SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
+            da.SelectCommand = getComments;
+            da = new SqlDataAdapter(getComments);
+            da.Fill(set, "notes");
         }
     }
 }
