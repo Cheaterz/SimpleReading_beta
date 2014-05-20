@@ -33,6 +33,7 @@ namespace Simple_Reading_client_beta
         DataSet set = null;
         SqlDataAdapter da = null;
         DataTable table = null;
+        UserHelper user;
 
         public Form1()
         {
@@ -70,6 +71,9 @@ namespace Simple_Reading_client_beta
                     plLogin.Visible = false;
                     this.MinimizeBox = true;
                     this.MaximizeBox = true;
+                    sql = @"SELECT id FROM users WHERE ulogin = " + login;
+                    comm = new SqlCommand(sql, conn);
+                    user = new UserHelper((int)comm.ExecuteScalar());
                 }
                 else
                     label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
@@ -115,7 +119,6 @@ namespace Simple_Reading_client_beta
             //richTextBox1.BackColor = Color.AliceBlue;
             //richTextBox1.ForeColor = Color.Beige;
             listView1.Items.Clear();
-            UserHelper uh = new UserHelper(1);
 
             set = new DataSet();
             string cs = ConfigurationManager.ConnectionStrings["notebook"].ConnectionString;
@@ -125,12 +128,12 @@ namespace Simple_Reading_client_beta
             //SqlCommandBuilder cmd = new SqlCommandBuilder(da);
 
             //получим актуальные данные со всех таблиц
-            SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + uh.Id, conn);
+            SqlCommand getBook = new SqlCommand("SELECT * FROM articles WHERE iduser=" + user.Id, conn);
             da.SelectCommand = getBook;
             da = new SqlDataAdapter(getBook);
             da.Fill(set, "book");
 
-            SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + uh.Id, conn);
+            SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
             da.SelectCommand = getComments;
             da = new SqlDataAdapter(getComments);
             da.Fill(set, "notes");
