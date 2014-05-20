@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Security.Cryptography;
 
 //
 /*
@@ -60,12 +61,25 @@ namespace Simple_Reading_client_beta
         {
             try
             {
-                login(tbLogin.Text, tbPassword.Text);
+                login(tbLogin.Text, getMD5Hash(tbPassword.Text));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private string getMD5Hash(string p)
+        {
+            //http://msdn.microsoft.com/en-us/library/system.security.cryptography.md5%28v=vs.110%29.aspx
+            MD5 md5H = MD5.Create();
+            byte[] data = md5H.ComputeHash(Encoding.UTF8.GetBytes(tbPassword.Text));
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+            return sBuilder.ToString();
         }
 
         private void login(string login, string pass)
