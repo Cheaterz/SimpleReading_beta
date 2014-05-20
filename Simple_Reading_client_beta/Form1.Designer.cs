@@ -30,12 +30,10 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lbLink = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
             this.lbCat = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -47,6 +45,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.tbLogin = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbLink = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.plLogin.SuspendLayout();
@@ -62,71 +65,53 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.lbLink);
+            this.panel2.Controls.Add(this.tbLink);
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.lbDate);
             this.panel2.Controls.Add(this.lbTags);
             this.panel2.Controls.Add(this.lbCat);
             this.panel2.Controls.Add(this.tbNotes);
-            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.listView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(258, 416);
+            this.panel2.Size = new System.Drawing.Size(258, 532);
             this.panel2.TabIndex = 4;
-            // 
-            // lbLink
-            // 
-            this.lbLink.AutoSize = true;
-            this.lbLink.Location = new System.Drawing.Point(26, 489);
-            this.lbLink.Name = "lbLink";
-            this.lbLink.Size = new System.Drawing.Size(46, 13);
-            this.lbLink.TabIndex = 10;
-            this.lbLink.Text = "Ссылка";
             // 
             // lbDate
             // 
             this.lbDate.AutoSize = true;
-            this.lbDate.Location = new System.Drawing.Point(27, 462);
+            this.lbDate.Location = new System.Drawing.Point(108, 445);
             this.lbDate.Name = "lbDate";
-            this.lbDate.Size = new System.Drawing.Size(33, 13);
+            this.lbDate.Size = new System.Drawing.Size(0, 13);
             this.lbDate.TabIndex = 9;
-            this.lbDate.Text = "Дата";
             // 
             // lbTags
             // 
             this.lbTags.AutoSize = true;
-            this.lbTags.Location = new System.Drawing.Point(27, 433);
+            this.lbTags.Location = new System.Drawing.Point(84, 419);
             this.lbTags.Name = "lbTags";
-            this.lbTags.Size = new System.Drawing.Size(31, 13);
+            this.lbTags.Size = new System.Drawing.Size(0, 13);
             this.lbTags.TabIndex = 8;
-            this.lbTags.Text = "Тэги";
             // 
             // lbCat
             // 
             this.lbCat.AutoSize = true;
-            this.lbCat.Location = new System.Drawing.Point(26, 409);
+            this.lbCat.Location = new System.Drawing.Point(84, 393);
             this.lbCat.Name = "lbCat";
-            this.lbCat.Size = new System.Drawing.Size(66, 13);
+            this.lbCat.Size = new System.Drawing.Size(0, 13);
             this.lbCat.TabIndex = 7;
-            this.lbCat.Text = "Категории: ";
             // 
             // tbNotes
             // 
-            this.tbNotes.Location = new System.Drawing.Point(0, 292);
+            this.tbNotes.Location = new System.Drawing.Point(0, 251);
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.Size = new System.Drawing.Size(200, 96);
+            this.tbNotes.Size = new System.Drawing.Size(250, 124);
             this.tbNotes.TabIndex = 6;
             this.tbNotes.Text = "";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(58, 263);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // listView1
             // 
@@ -155,7 +140,7 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(114, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(691, 416);
+            this.panel1.Size = new System.Drawing.Size(691, 532);
             this.panel1.TabIndex = 7;
             // 
             // tbText
@@ -175,9 +160,9 @@
             this.plLogin.Controls.Add(this.label1);
             this.plLogin.Controls.Add(this.tbPassword);
             this.plLogin.Controls.Add(this.tbLogin);
-            this.plLogin.Location = new System.Drawing.Point(0, 144);
+            this.plLogin.Location = new System.Drawing.Point(12, 132);
             this.plLogin.Name = "plLogin";
-            this.plLogin.Size = new System.Drawing.Size(417, 440);
+            this.plLogin.Size = new System.Drawing.Size(417, 124);
             this.plLogin.TabIndex = 11;
             this.plLogin.VisibleChanged += new System.EventHandler(this.plLogin_VisibleChanged);
             // 
@@ -232,6 +217,51 @@
             this.tbLogin.Size = new System.Drawing.Size(151, 20);
             this.tbLogin.TabIndex = 0;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 393);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Категории: ";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 419);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Тэги";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 445);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Дата добавления";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 469);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Ссылка:";
+            // 
+            // tbLink
+            // 
+            this.tbLink.Location = new System.Drawing.Point(15, 486);
+            this.tbLink.Name = "tbLink";
+            this.tbLink.ReadOnly = true;
+            this.tbLink.Size = new System.Drawing.Size(235, 20);
+            this.tbLink.TabIndex = 15;
+            this.tbLink.Click += new System.EventHandler(this.tbLink_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btLogin;
@@ -261,12 +291,10 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.RichTextBox tbNotes;
         private System.Windows.Forms.Label lbTags;
         private System.Windows.Forms.Label lbCat;
-        private System.Windows.Forms.Label lbLink;
         private System.Windows.Forms.Label lbDate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox tbText;
@@ -277,6 +305,11 @@
         private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox tbLink;
 
     }
 }

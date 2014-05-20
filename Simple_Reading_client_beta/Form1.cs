@@ -24,6 +24,8 @@ using System.Configuration;
  * процедура check_tags?
  * 
  * админская часть
+ * 
+ * рассказать, почему я выбрал md5
  */
 
 namespace Simple_Reading_client_beta
@@ -33,7 +35,6 @@ namespace Simple_Reading_client_beta
         SqlConnection conn = null;
         DataSet set = null;
         SqlDataAdapter da = null;
-        //DataTable table = null;
         UserHelper user = null;
         bool logged = false;
 
@@ -46,6 +47,9 @@ namespace Simple_Reading_client_beta
             label1.ForeColor = Color.Red;
             tbText.BackColor = Color.AliceBlue;
             //tbText.ForeColor = Color.Beige;
+            tbLink.ForeColor = Color.DarkSlateGray;
+            tbLink.BackColor = Color.White;
+
             listView1.Columns.Add("Название статьи");
             listView1.Columns[0].Width = listView1.Width;
             this.MinimizeBox = false;
@@ -54,7 +58,14 @@ namespace Simple_Reading_client_beta
 
         private void btLogin_Click(object sender, EventArgs e)
         {
-            login(tbLogin.Text, tbPassword.Text);
+            try
+            {
+                login(tbLogin.Text, tbPassword.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void login(string login, string pass)
@@ -96,9 +107,16 @@ namespace Simple_Reading_client_beta
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (conn != null)
+            try
             {
-                conn.Close();
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -110,13 +128,10 @@ namespace Simple_Reading_client_beta
             tbText.Text = ah.Text;
             tbNotes.Text = ah.Notes;
             string cat = ah.Cat;
-            lbCat.Text = "Категория: " + cat;
-            lbTags.Text = "Теги: " + ah.Tags;
-            lbLink.Text = ah.Link;
+            lbCat.Text = cat;
+            lbTags.Text = ah.Tags;
+            tbLink.Text = ah.Link;
             lbDate.Text = ah.Date;
-            //richTextBox1.Text = listView1.SelectedItems[0].Tag.ToString();
-            //int i = (int)listView1.SelectedItems[0].Index;
-            //MessageBox.Show(listView1.SelectedItems[0].Tag.ToString());
         }
 
         private void plLogin_VisibleChanged(object sender, EventArgs e)
@@ -136,7 +151,7 @@ namespace Simple_Reading_client_beta
             getData(da, conn, set);
 
                 int i = 0;
-                foreach (DataRow row in set.Tables["book"].Rows)
+                foreach (DataRow row in set.Tables["articles"].Rows)
                 {
                     string note = "";
                     foreach (DataRow rowNote in set.Tables["notes"].Rows)
@@ -151,40 +166,53 @@ namespace Simple_Reading_client_beta
                     (listView1.Items[i].Tag as ArticleHelper).Id = (int)row["id"];
                     (listView1.Items[i].Tag as ArticleHelper).Link = row["link_original"].ToString();
                     (listView1.Items[i].Tag as ArticleHelper).Date = row["date_add"].ToString();
+
+                    //linq2objects; заменить на EntityFramework или чистый ADO
+                    var result = from info in set.Tables["Cats"].AsEnumerable().Distinct()
+                                 where info.Field<int>("idarticle") == (listView1.Items[i].Tag as ArticleHelper).Id
+                                 select new 
+                                 {
+                                    Category = info.Field<string>("title"),
+                                    Tag = info.Field<string>("tag_title")
+                                 };
+
+                    foreach (var item in result)
+                    {
+                        (listView1.Items[i].Tag as ArticleHelper).Cat = item.Category;
+                        (listView1.Items[i].Tag as ArticleHelper).Tags += item.Tag + ", ";
+                    }
+
                     i++;
                 }
 
                 //достать тэги и категории
-                SqlCommand getCat = new SqlCommand("SELECT distinct c.title FROM categories c, articles_cats ac WHERE c.id = ac.idcat AND ac.idarticle=@p1", conn);
-                da.SelectCommand = getCat;
-                SqlParameter p1;
-                p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
+                //SqlCommand getCat = new SqlCommand("SELECT ac.idarticle, c.title, t.tag_title FROM categories c, tags t, articles_cats ac WHERE ac.idtag=t.id AND ac.idcat=c.id AND ac.idarticle=@p1", conn);
+                //da.SelectCommand = getCat;
+                //SqlParameter p1;
+                //p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
+
+                //foreach (ListViewItem lt in listView1.Items)
+                //{
+                //    p1.Value = (lt.Tag as ArticleHelper).Id;
+                //    da = new SqlDataAdapter(getCat);
+                //    da.Fill(set, "cats");
+                //    (lt.Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
+                //    if (set.Tables["cats"].Rows.Count == 1)
+                //        (lt.Tag as ArticleHelper).Tags = set.Tables["cats"].Rows[0]["tag_title"].ToString();
+                //    else
+                //    {
+                //        int cnt = set.Tables["cats"].Rows.Count;
+                //        foreach (DataRow row in set.Tables["cats"].Rows)
+                //        {
+                //            (lt.Tag as ArticleHelper).Tags += row["tag_title"].ToString();
+                //            if (cnt != cnt - 1)
+                //                (lt.Tag as ArticleHelper).Tags += ", ";
+                //            cnt++;
+                //        }
+                //    }
+                //    //set.Tables["cats"].Clear();
+                //}
                 
-                foreach (ListViewItem lt in listView1.Items)
-                {
-                    p1.Value = (lt.Tag as ArticleHelper).Id;
-                    da = new SqlDataAdapter(getCat);
-                    da.Fill(set, "cats");
-                    (lt.Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
-                    
-                    set.Tables["cats"].Clear();
-                }
-                SqlCommand getTag = new SqlCommand("SELECT t.tag_title FROM tags t, articles_cats ac WHERE t.id = ac.idtag AND ac.idarticle=@p1", conn);
-                da.SelectCommand = getTag;
-                p1 = getTag.Parameters.Add("@p1", SqlDbType.Int);
-                i = 0;
-                foreach (ListViewItem it in listView1.Items)
-                {
-                    p1.Value = (listView1.Items[i].Tag as ArticleHelper).Id;
-                    da = new SqlDataAdapter(getTag);
-                    da.Fill(set, "cats");
-                    foreach (DataRow row in set.Tables["cats"].Rows)
-                    {
-                        (listView1.Items[i].Tag as ArticleHelper).Tags += row["tag_title"] + ", ";
-                    }
-                    i++;
-                    set.Tables["cats"].Clear();
-                }
 
                 //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
                 //da.SelectCommand = getComments;
@@ -207,12 +235,23 @@ namespace Simple_Reading_client_beta
             SqlCommand getBook = new SqlCommand("SELECT id, title, article_text, iduser, convert(varchar(15),date_add,105) as 'date_add', link_original FROM articles WHERE iduser=" + user.Id, conn);
             da.SelectCommand = getBook;
             da = new SqlDataAdapter(getBook);
-            da.Fill(set, "book");
+            da.Fill(set, "articles");
 
             SqlCommand getComments = new SqlCommand("SELECT * FROM notes WHERE iduser=" + user.Id, conn);
             da.SelectCommand = getComments;
             da = new SqlDataAdapter(getComments);
             da.Fill(set, "notes");
+
+            SqlCommand getCat = new SqlCommand("SELECT ac.idarticle, c.title, t.tag_title FROM categories c, tags t, articles_cats ac WHERE ac.idtag=t.id AND ac.idcat=c.id", conn);
+            da.SelectCommand = getCat;
+            da = new SqlDataAdapter(getCat);
+            da.Fill(set, "cats");
+
+        }
+
+        private void tbLink_Click(object sender, EventArgs e)
+        {
+            tbLink.SelectAll();
         }
     }
 }
