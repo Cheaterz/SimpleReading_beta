@@ -163,6 +163,53 @@ namespace Simple_Reading_client_beta
                     notetext.SourceVersion = DataRowVersion.Current;
 
                     da.Update(set.Tables["notes"]);
+
+                    //попытка апдейта через функцию с помощью нового адаптера
+
+                    da = new SqlDataAdapter();
+                    DataTable tbl = new DataTable();
+                    tbl.Columns.Add("ida", typeof(int));
+                    tbl.Columns.Add("cat", typeof(string));
+                    foreach (ListViewItem lv in listView1.Items)
+                    {
+                        DataRow row = tbl.NewRow();
+                        row["ida"] = (lv.Tag as ArticleHelper).Id;
+                        row["cat"] = (lv.Tag as ArticleHelper).Cat;
+                        tbl.Rows.Add(row);
+                    }
+
+                    SqlCommand upd = new SqlCommand("update_cats", conn);
+                    upd.CommandType = CommandType.StoredProcedure;
+                    da.SelectCommand = upd;
+                    SqlParameter cat, ida;
+                    cat = upd.Parameters.Add("@cat", SqlDbType.NVarChar, 100);
+                    ida = upd.Parameters.Add("@ida", SqlDbType.Int);
+                    //da.SelectCommand.Parameters.Add("@cat", SqlDbType.NVarChar);
+                    foreach (DataRow r in tbl.Rows)
+                    {
+                        cat.Value = r["cat"];
+                        ida.Value = r["ida"];
+                        da = new SqlDataAdapter(upd);
+                        da.Fill(tbl);
+                    }
+
+                    //set = new DataSet();
+                    //set.Tables.Add(tbl);
+
+                    //SqlCommand upd = new SqlCommand("update_cats", conn);
+                    //upd.CommandType = CommandType.StoredProcedure;
+
+                    ////upd.Parameters.Add("@cat", SqlDbType.NVarChar, 100, "cat");
+                    ////upd.Parameters.Add("@ida", SqlDbType.Int, 4, "ida");
+
+                    //SqlParameterCollection pcol;
+                    //pcol = upd.Parameters;
+                    //pcol.Add("@cat", SqlDbType.NVarChar, 100, "cat");
+                    //pcol.Add("@ida", SqlDbType.Int, 4, "ida");
+
+                    //da.SelectCommand = upd;
+                    ////DataSet ds = new DataSet();
+                    da.Fill(set.Tables[0]);
                 }
 
             }
@@ -313,33 +360,40 @@ namespace Simple_Reading_client_beta
         //TextChanged не подошел, ибо он срабатывал после каждого ввода символа
         private void tbNotes_Leave(object sender, EventArgs e)
         {
-            if ((listView1.SelectedItems[0].Tag as ArticleHelper).Notes != tbNotes.Text)
+            try
             {
-                (listView1.SelectedItems[0].Tag as ArticleHelper).Notes = tbNotes.Text;
-                edited = true;
+                if ((listView1.SelectedItems[0].Tag as ArticleHelper).Notes != tbNotes.Text)
+                {
+                    (listView1.SelectedItems[0].Tag as ArticleHelper).Notes = tbNotes.Text;
+                    edited = true;
 
-                DataRow[] r = set.Tables["notes"].Select("idarticle = " + (listView1.SelectedItems[0].Tag as ArticleHelper).Id);
-                if(r.Length == 1)
-                {
-                    foreach (DataRow row in set.Tables["notes"].Rows)
+                    DataRow[] r = set.Tables["notes"].Select("idarticle = " + (listView1.SelectedItems[0].Tag as ArticleHelper).Id);
+                    if(r.Length == 1)
                     {
-                        if ((int)row["idarticle"] == (listView1.SelectedItems[0].Tag as ArticleHelper).Id)
+                        foreach (DataRow row in set.Tables["notes"].Rows)
                         {
-                            row["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
-                        }
+                            if ((int)row["idarticle"] == (listView1.SelectedItems[0].Tag as ArticleHelper).Id)
+                            {
+                                row["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                            }
                     
+                        }
                     }
+                    else if (r.Length < 1)
+                    {
+                        DataRow r1 = set.Tables["notes"].NewRow();
+                        r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
+                        r1["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                        r1["iduser"] = user.Id;
+                        set.Tables["notes"].Rows.Add(r1);
+                    }
+                    //editedItems.Add(listView1.SelectedItems[0].Index);
+                    //da.Update(set.Tables["notes"]);
                 }
-                else if (r.Length < 1)
-                {
-                    DataRow r1 = set.Tables["notes"].NewRow();
-                    r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
-                    r1["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
-                    r1["iduser"] = user.Id;
-                    set.Tables["notes"].Rows.Add(r1);
-                }
-                //editedItems.Add(listView1.SelectedItems[0].Index);
-                //da.Update(set.Tables["notes"]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
