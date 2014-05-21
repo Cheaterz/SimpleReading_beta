@@ -136,10 +136,6 @@ namespace Simple_Reading_client_beta
         {
             try
             {
-                //if (conn != null)
-                //{
-                //    conn.Close();
-                //}
                 if (edited)
                 {
                     //http://msdn.microsoft.com/ru-ru/library/33y2221y(v=vs.110).aspx
@@ -225,19 +221,8 @@ namespace Simple_Reading_client_beta
                             {
                                 set.Tables["cats"].Rows[i]["title"] = "";
                             }
-                            //if ((int)row["idarticle"] == (lv.Tag as ArticleHelper).Id)
-                            //{
-                            //    foreach(string s in tagz)
-                            //    {
-                            //        DataRow[] foundRows;
-                            //        foundRows = set.Tables["cats"].Select("tag_title = '" + s + "'");
-                            //        if (foundRows.Length > 0)
-                            //            MessageBox.Show("a");
-                            //    }
-                            //}
                             i++;
                         }
-                        //(lv.Tag as ArticleHelper).
                     }
 
                     foreach (DataRow row in set.Tables["cats"].Rows)
@@ -254,7 +239,6 @@ namespace Simple_Reading_client_beta
                         tag.Value = row["tag_title"];
                         idarticle.Value = row["idarticle"];
 
-                        //if (row.RowState == DataRowState.Modified && row["title"] == null)
                         if (row["title"] == "")
                         {
                             editmode.Value = "del";
@@ -266,33 +250,7 @@ namespace Simple_Reading_client_beta
                         da = new SqlDataAdapter(updateTags);
                         da.Fill(set.Tables["cats"]);
                     }
-
-                    
-                    
-                    //foreach (string s in tagz)
-                    //{
-                    //    MessageBox.Show(s);
-                    //}
-
-                    //set = new DataSet();
-                    //set.Tables.Add(tbl);
-
-                    //SqlCommand upd = new SqlCommand("update_cats", conn);
-                    //upd.CommandType = CommandType.StoredProcedure;
-
-                    ////upd.Parameters.Add("@cat", SqlDbType.NVarChar, 100, "cat");
-                    ////upd.Parameters.Add("@ida", SqlDbType.Int, 4, "ida");
-
-                    //SqlParameterCollection pcol;
-                    //pcol = upd.Parameters;
-                    //pcol.Add("@cat", SqlDbType.NVarChar, 100, "cat");
-                    //pcol.Add("@ida", SqlDbType.Int, 4, "ida");
-
-                    //da.SelectCommand = upd;
-                    ////DataSet ds = new DataSet();
-                    //da.Fill(set.Tables[0]);
                 }
-
             }
             catch (Exception ex)
             {
@@ -307,10 +265,6 @@ namespace Simple_Reading_client_beta
             ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
             tbText.Text = ah.Text;
             tbNotes.Text = ah.Notes;
-            //string cat = ah.Cat;
-            //cbCat.Text = cat;
-            //cbCat.SelectedItem = cbCat.FindString("Программирование");
-            //cbCat.Tag = (object)ah.Id;
             cbCat.SelectedIndex = cbCat.FindString(ah.Cat);
             tbTags.Text = ah.Tags;
             tbLink.Text = ah.Link;
@@ -368,50 +322,6 @@ namespace Simple_Reading_client_beta
 
                     i++;
                 }
-
-                //достать тэги и категории
-                //SqlCommand getCat = new SqlCommand("SELECT ac.idarticle, c.title, t.tag_title FROM categories c, tags t, articles_cats ac WHERE ac.idtag=t.id AND ac.idcat=c.id AND ac.idarticle=@p1", conn);
-                //da.SelectCommand = getCat;
-                //SqlParameter p1;
-                //p1 = getCat.Parameters.Add("@p1", SqlDbType.Int);
-
-                //foreach (ListViewItem lt in listView1.Items)
-                //{
-                //    p1.Value = (lt.Tag as ArticleHelper).Id;
-                //    da = new SqlDataAdapter(getCat);
-                //    da.Fill(set, "cats");
-                //    (lt.Tag as ArticleHelper).Cat = set.Tables["cats"].Rows[0]["title"].ToString();
-                //    if (set.Tables["cats"].Rows.Count == 1)
-                //        (lt.Tag as ArticleHelper).Tags = set.Tables["cats"].Rows[0]["tag_title"].ToString();
-                //    else
-                //    {
-                //        int cnt = set.Tables["cats"].Rows.Count;
-                //        foreach (DataRow row in set.Tables["cats"].Rows)
-                //        {
-                //            (lt.Tag as ArticleHelper).Tags += row["tag_title"].ToString();
-                //            if (cnt != cnt - 1)
-                //                (lt.Tag as ArticleHelper).Tags += ", ";
-                //            cnt++;
-                //        }
-                //    }
-                //    //set.Tables["cats"].Clear();
-                //}
-                
-
-                //SqlCommand getComments = new SqlCommand("SELECT * FROM comments WHERE iduser=" + uh.Id, conn);
-                //da.SelectCommand = getComments;
-                //da = new SqlDataAdapter(getComments);
-                //da.Fill(set, "comments");
-
-                //foreach (DataRow row in set.Tables["comments"].Rows)
-                //{
-                //    MessageBox.Show(row["comment_text"].ToString());
-                //}
-                //foreach (DataRow row in set.Tables["book"].Rows)
-                //{
-                //    MessageBox.Show(row["title"].ToString());
-                //}
-
         }
 
         private void getData(SqlDataAdapter da, SqlConnection conn, DataSet set)
@@ -468,8 +378,6 @@ namespace Simple_Reading_client_beta
                         r1["iduser"] = user.Id;
                         set.Tables["notes"].Rows.Add(r1);
                     }
-                    //editedItems.Add(listView1.SelectedItems[0].Index);
-                    //da.Update(set.Tables["notes"]);
                 }
             }
             catch (Exception ex)
@@ -480,8 +388,11 @@ namespace Simple_Reading_client_beta
 
         private void cbCat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cbCat.Text != "")
+            if (cbCat.Text != "")
+            {
                 (listView1.SelectedItems[0].Tag as ArticleHelper).Cat = cbCat.SelectedItem.ToString();
+                edited = true;
+            }
         }
 
         private void tbTags_Leave(object sender, EventArgs e)
@@ -489,6 +400,7 @@ namespace Simple_Reading_client_beta
             if ((listView1.SelectedItems[0].Tag as ArticleHelper).Tags != tbTags.Text)
             {
                 (listView1.SelectedItems[0].Tag as ArticleHelper).Tags = tbTags.Text;
+                edited = true;
             }
         }
     }
