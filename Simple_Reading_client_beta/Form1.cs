@@ -193,6 +193,39 @@ namespace Simple_Reading_client_beta
                         da.Fill(tbl);
                     }
 
+                    string[] delim = { ", " };
+                    foreach (ListViewItem lv in listView1.Items)
+                    {
+                        string[] tagz = (lv.Tag as ArticleHelper).Tags.Split(delim, System.StringSplitOptions.RemoveEmptyEntries);
+                        tagz[0] = "haha";
+                        int i = 0;
+                        foreach (DataRow row in set.Tables["cats"].Rows)
+                        {
+                            if (!tagz.Contains(row["tag_title"]) && (int)row["idarticle"] == (lv.Tag as ArticleHelper).Id)
+                            {
+                                set.Tables["cats"].Rows[i]["title"] = 0;
+                            }
+                            i++;
+
+                        }
+                        //(lv.Tag as ArticleHelper).
+                    }
+
+                    foreach (DataRow row in set.Tables["cats"].Rows)
+                    {
+                        if (row.RowState == DataRowState.Modified)
+                        {
+                            MessageBox.Show(row["idarticle"].ToString() + " " + row["tag_title"] + " " + row["title"]);
+                        }
+                    }
+
+                    
+                    
+                    //foreach (string s in tagz)
+                    //{
+                    //    MessageBox.Show(s);
+                    //}
+
                     //set = new DataSet();
                     //set.Tables.Add(tbl);
 
@@ -209,7 +242,7 @@ namespace Simple_Reading_client_beta
 
                     //da.SelectCommand = upd;
                     ////DataSet ds = new DataSet();
-                    da.Fill(set.Tables[0]);
+                    //da.Fill(set.Tables[0]);
                 }
 
             }
@@ -231,7 +264,7 @@ namespace Simple_Reading_client_beta
             //cbCat.SelectedItem = cbCat.FindString("Программирование");
             //cbCat.Tag = (object)ah.Id;
             cbCat.SelectedIndex = cbCat.FindString(ah.Cat);
-            lbTags.Text = ah.Tags;
+            tbTags.Text = ah.Tags;
             tbLink.Text = ah.Link;
             lbDate.Text = ah.Date;
         }
@@ -400,6 +433,14 @@ namespace Simple_Reading_client_beta
         private void cbCat_SelectedIndexChanged(object sender, EventArgs e)
         {
             (listView1.SelectedItems[0].Tag as ArticleHelper).Cat = cbCat.SelectedItem.ToString();
+        }
+
+        private void tbTags_Leave(object sender, EventArgs e)
+        {
+            if ((listView1.SelectedItems[0].Tag as ArticleHelper).Tags != tbTags.Text)
+            {
+                (listView1.SelectedItems[0].Tag as ArticleHelper).Tags = tbTags.Text;
+            }
         }
     }
 }

@@ -36,7 +36,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
-            this.lbTags = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.RichTextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
@@ -50,6 +49,7 @@
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.tbLogin = new System.Windows.Forms.TextBox();
             this.cbCat = new System.Windows.Forms.ComboBox();
+            this.tbTags = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.plLogin.SuspendLayout();
@@ -65,6 +65,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.tbTags);
             this.panel2.Controls.Add(this.cbCat);
             this.panel2.Controls.Add(this.tbLink);
             this.panel2.Controls.Add(this.label7);
@@ -72,7 +73,6 @@
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.lbDate);
-            this.panel2.Controls.Add(this.lbTags);
             this.panel2.Controls.Add(this.tbNotes);
             this.panel2.Controls.Add(this.listView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -83,7 +83,7 @@
             // 
             // tbLink
             // 
-            this.tbLink.Location = new System.Drawing.Point(15, 486);
+            this.tbLink.Location = new System.Drawing.Point(15, 502);
             this.tbLink.Name = "tbLink";
             this.tbLink.ReadOnly = true;
             this.tbLink.Size = new System.Drawing.Size(235, 20);
@@ -93,7 +93,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 469);
+            this.label7.Location = new System.Drawing.Point(12, 483);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 14;
@@ -102,7 +102,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 445);
+            this.label6.Location = new System.Drawing.Point(12, 456);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(96, 13);
             this.label6.TabIndex = 13;
@@ -111,7 +111,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 419);
+            this.label5.Location = new System.Drawing.Point(12, 422);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 13);
             this.label5.TabIndex = 12;
@@ -129,18 +129,10 @@
             // lbDate
             // 
             this.lbDate.AutoSize = true;
-            this.lbDate.Location = new System.Drawing.Point(108, 445);
+            this.lbDate.Location = new System.Drawing.Point(108, 456);
             this.lbDate.Name = "lbDate";
             this.lbDate.Size = new System.Drawing.Size(0, 13);
             this.lbDate.TabIndex = 9;
-            // 
-            // lbTags
-            // 
-            this.lbTags.AutoSize = true;
-            this.lbTags.Location = new System.Drawing.Point(84, 419);
-            this.lbTags.Name = "lbTags";
-            this.lbTags.Size = new System.Drawing.Size(0, 13);
-            this.lbTags.TabIndex = 8;
             // 
             // tbNotes
             // 
@@ -265,6 +257,14 @@
             this.cbCat.TabIndex = 16;
             this.cbCat.SelectedIndexChanged += new System.EventHandler(this.cbCat_SelectedIndexChanged);
             // 
+            // tbTags
+            // 
+            this.tbTags.Location = new System.Drawing.Point(87, 419);
+            this.tbTags.Name = "tbTags";
+            this.tbTags.Size = new System.Drawing.Size(163, 20);
+            this.tbTags.TabIndex = 17;
+            this.tbTags.Leave += new System.EventHandler(this.tbTags_Leave);
+            // 
             // Form1
             // 
             this.AcceptButton = this.btLogin;
@@ -296,7 +296,6 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.RichTextBox tbNotes;
-        private System.Windows.Forms.Label lbTags;
         private System.Windows.Forms.Label lbDate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox tbText;
@@ -313,6 +312,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbLink;
         private System.Windows.Forms.ComboBox cbCat;
+        private System.Windows.Forms.TextBox tbTags;
 
     }
 }
