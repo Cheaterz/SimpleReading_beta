@@ -30,6 +30,11 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.tbLink = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
             this.lbCat = new System.Windows.Forms.Label();
@@ -45,11 +50,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.tbLogin = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbLink = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.plLogin.SuspendLayout();
@@ -80,6 +80,51 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(258, 532);
             this.panel2.TabIndex = 4;
+            // 
+            // tbLink
+            // 
+            this.tbLink.Location = new System.Drawing.Point(15, 486);
+            this.tbLink.Name = "tbLink";
+            this.tbLink.ReadOnly = true;
+            this.tbLink.Size = new System.Drawing.Size(235, 20);
+            this.tbLink.TabIndex = 15;
+            this.tbLink.Click += new System.EventHandler(this.tbLink_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 469);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Ссылка:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 445);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Дата добавления";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 419);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 13);
+            this.label5.TabIndex = 12;
+            this.label5.Text = "Тэги";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 393);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 13);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Категории: ";
             // 
             // lbDate
             // 
@@ -112,6 +157,7 @@
             this.tbNotes.Size = new System.Drawing.Size(250, 124);
             this.tbNotes.TabIndex = 6;
             this.tbNotes.Text = "";
+            this.tbNotes.Leave += new System.EventHandler(this.tbNotes_Leave);
             // 
             // listView1
             // 
@@ -216,51 +262,6 @@
             this.tbLogin.Name = "tbLogin";
             this.tbLogin.Size = new System.Drawing.Size(151, 20);
             this.tbLogin.TabIndex = 0;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 393);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(66, 13);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "Категории: ";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 419);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "Тэги";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 445);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Дата добавления";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 469);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Ссылка:";
-            // 
-            // tbLink
-            // 
-            this.tbLink.Location = new System.Drawing.Point(15, 486);
-            this.tbLink.Name = "tbLink";
-            this.tbLink.ReadOnly = true;
-            this.tbLink.Size = new System.Drawing.Size(235, 20);
-            this.tbLink.TabIndex = 15;
-            this.tbLink.Click += new System.EventHandler(this.tbLink_Click);
             // 
             // Form1
             // 

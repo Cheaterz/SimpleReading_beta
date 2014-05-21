@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -27,6 +27,7 @@ using System.Security.Cryptography;
  * админская часть
  * 
  * рассказать, почему я выбрал md5
+ * чистить базу от пустых строк, заметок?
  */
 
 namespace Simple_Reading_client_beta
@@ -38,6 +39,8 @@ namespace Simple_Reading_client_beta
         SqlDataAdapter da = null;
         UserHelper user = null;
         bool logged = false;
+        bool edited = false;
+        ArrayList editedItems = null;
 
         public Form1()
         {
@@ -55,6 +58,7 @@ namespace Simple_Reading_client_beta
             listView1.Columns[0].Width = listView1.Width;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
+            editedItems = new ArrayList();
         }
 
         private void btLogin_Click(object sender, EventArgs e)
@@ -84,7 +88,7 @@ namespace Simple_Reading_client_beta
 
         private void login(string login, string pass)
         {
-            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["class"].ConnectionString;
             conn = new SqlConnection(cs);
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
@@ -123,10 +127,25 @@ namespace Simple_Reading_client_beta
         {
             try
             {
-                if (conn != null)
+                //if (conn != null)
+                //{
+                //    conn.Close();
+                //}
+                if (edited)
                 {
-                    conn.Close();
+                    //http://msdn.microsoft.com/ru-ru/library/33y2221y(v=vs.110).aspx
+                    SqlCommand updNotes = new SqlCommand(@"UPDATE notes SET note_text=@text WHERE idarticle=@ida");
+                    da.UpdateCommand = updNotes;
+                    updNotes.Connection = conn;
+                    updNotes.Parameters.Add("@ida", SqlDbType.Int, 4, "idarticle");
+                    
+                    SqlParameter text = da.UpdateCommand.Parameters.Add("@text", SqlDbType.Text);
+                    text.SourceColumn = "note_text";
+                    text.SourceVersion = DataRowVersion.Current;
+
+                    da.Update(set.Tables["notes"]);
                 }
+
             }
             catch (Exception ex)
             {
@@ -157,7 +176,7 @@ namespace Simple_Reading_client_beta
             listView1.Items.Clear();
 
             set = new DataSet();
-            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["class"].ConnectionString;
             conn = new SqlConnection(cs);
             da = new SqlDataAdapter();
 
@@ -182,6 +201,7 @@ namespace Simple_Reading_client_beta
                     (listView1.Items[i].Tag as ArticleHelper).Date = row["date_add"].ToString();
 
                     //linq2objects; заменить на EntityFramework или чистый ADO
+                    //просто потому, что так удобней
                     var result = from info in set.Tables["Cats"].AsEnumerable().Distinct()
                                  where info.Field<int>("idarticle") == (listView1.Items[i].Tag as ArticleHelper).Id
                                  select new 
@@ -266,6 +286,36 @@ namespace Simple_Reading_client_beta
         private void tbLink_Click(object sender, EventArgs e)
         {
             tbLink.SelectAll();
+        }
+
+        //TextChanged не подошел, ибо он срабатывал после каждого ввода символа
+        private void tbNotes_Leave(object sender, EventArgs e)
+        {
+            if ((listView1.SelectedItems[0].Tag as ArticleHelper).Notes != tbNotes.Text)
+            {
+                (listView1.SelectedItems[0].Tag as ArticleHelper).Notes = tbNotes.Text;
+                edited = true;
+
+                int i = 0;
+                foreach (DataRow row in set.Tables["notes"].Rows)
+                {
+                    if ((int)row["idarticle"] == (listView1.SelectedItems[0].Tag as ArticleHelper).Id)
+                    {
+                        row["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                    }
+                    if (i >= set.Tables["notes"].Rows.Count - 1)
+                    {
+                        DataRow r1 = set.Tables["notes"].NewRow();
+                        r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
+                        r1["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                        r1["iduser"] = user.Id;
+                        set.Tables["notes"].Rows.Add(r1);
+                    }
+                    i++;
+                }
+                //editedItems.Add(listView1.SelectedItems[0].Index);
+                //da.Update(set.Tables["notes"]);
+            }
         }
     }
 }
