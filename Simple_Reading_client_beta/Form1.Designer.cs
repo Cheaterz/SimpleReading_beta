@@ -263,6 +263,7 @@
             this.cbCat.Name = "cbCat";
             this.cbCat.Size = new System.Drawing.Size(121, 21);
             this.cbCat.TabIndex = 16;
+            this.cbCat.SelectedIndexChanged += new System.EventHandler(this.cbCat_SelectedIndexChanged);
             // 
             // Form1
             // 

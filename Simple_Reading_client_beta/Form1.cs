@@ -182,6 +182,7 @@ namespace Simple_Reading_client_beta
             //string cat = ah.Cat;
             //cbCat.Text = cat;
             //cbCat.SelectedItem = cbCat.FindString("Программирование");
+            //cbCat.Tag = (object)ah.Id;
             cbCat.SelectedIndex = cbCat.FindString(ah.Cat);
             lbTags.Text = ah.Tags;
             tbLink.Text = ah.Link;
@@ -340,6 +341,11 @@ namespace Simple_Reading_client_beta
                 //editedItems.Add(listView1.SelectedItems[0].Index);
                 //da.Update(set.Tables["notes"]);
             }
+        }
+
+        private void cbCat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            (listView1.SelectedItems[0].Tag as ArticleHelper).Cat = cbCat.SelectedItem.ToString();
         }
     }
 }
