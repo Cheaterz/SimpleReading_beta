@@ -193,30 +193,78 @@ namespace Simple_Reading_client_beta
                         da.Fill(tbl);
                     }
 
-                    string[] delim = { ", " };
+
+                    //то же самое, но для тегов
+                    string[] delim = { ", ", "," };
                     foreach (ListViewItem lv in listView1.Items)
                     {
                         string[] tagz = (lv.Tag as ArticleHelper).Tags.Split(delim, System.StringSplitOptions.RemoveEmptyEntries);
-                        tagz[0] = "haha";
+
+                        foreach (string s in tagz)
+                        {
+                            DataRow[] foundRows;
+                            foundRows = set.Tables["cats"].Select("tag_title = '" + s + "'");
+                            if (foundRows.Length == 0)
+                            {
+                                DataRow r1 = set.Tables["cats"].NewRow();
+                                r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
+                                r1["tag_title"] = s;
+                                r1["title"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Cat;
+                                set.Tables["cats"].Rows.Add(r1);
+                            }
+                        }
+                    }
+
+                    foreach (ListViewItem lv in listView1.Items)
+                    {
+                        string[] tagz = (lv.Tag as ArticleHelper).Tags.Split(delim, System.StringSplitOptions.RemoveEmptyEntries);
                         int i = 0;
                         foreach (DataRow row in set.Tables["cats"].Rows)
                         {
                             if (!tagz.Contains(row["tag_title"]) && (int)row["idarticle"] == (lv.Tag as ArticleHelper).Id)
                             {
-                                set.Tables["cats"].Rows[i]["title"] = 0;
+                                set.Tables["cats"].Rows[i]["title"] = "";
                             }
+                            //if ((int)row["idarticle"] == (lv.Tag as ArticleHelper).Id)
+                            //{
+                            //    foreach(string s in tagz)
+                            //    {
+                            //        DataRow[] foundRows;
+                            //        foundRows = set.Tables["cats"].Select("tag_title = '" + s + "'");
+                            //        if (foundRows.Length > 0)
+                            //            MessageBox.Show("a");
+                            //    }
+                            //}
                             i++;
-
                         }
                         //(lv.Tag as ArticleHelper).
                     }
 
                     foreach (DataRow row in set.Tables["cats"].Rows)
                     {
-                        if (row.RowState == DataRowState.Modified)
+                        da = new SqlDataAdapter();
+
+                        SqlCommand updateTags = new SqlCommand("update_tags", conn);
+                        updateTags.CommandType = CommandType.StoredProcedure;
+                        da.SelectCommand = updateTags;
+                        SqlParameter tag, idarticle, editmode;
+                        editmode = updateTags.Parameters.Add("@mode", SqlDbType.NVarChar, 4);
+                        tag = updateTags.Parameters.Add("@tag", SqlDbType.NVarChar, 100);
+                        idarticle = updateTags.Parameters.Add("@idarticle", SqlDbType.Int);
+                        tag.Value = row["tag_title"];
+                        idarticle.Value = row["idarticle"];
+
+                        //if (row.RowState == DataRowState.Modified && row["title"] == null)
+                        if (row["title"] == "")
                         {
-                            MessageBox.Show(row["idarticle"].ToString() + " " + row["tag_title"] + " " + row["title"]);
+                            editmode.Value = "del";
                         }
+                        else
+                        {
+                            editmode.Value = "upd";
+                        }
+                        da = new SqlDataAdapter(updateTags);
+                        da.Fill(set.Tables["cats"]);
                     }
 
                     
@@ -432,7 +480,8 @@ namespace Simple_Reading_client_beta
 
         private void cbCat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            (listView1.SelectedItems[0].Tag as ArticleHelper).Cat = cbCat.SelectedItem.ToString();
+            if(cbCat.Text != "")
+                (listView1.SelectedItems[0].Tag as ArticleHelper).Cat = cbCat.SelectedItem.ToString();
         }
 
         private void tbTags_Leave(object sender, EventArgs e)
