@@ -40,7 +40,6 @@ namespace Simple_Reading_client_beta
         UserHelper user = null;
         bool logged = false;
         bool edited = false;
-        ArrayList editedItems = null;
 
         public Form1()
         {
@@ -58,7 +57,6 @@ namespace Simple_Reading_client_beta
             listView1.Columns[0].Width = listView1.Width;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
-            editedItems = new ArrayList();
         }
 
         private void btLogin_Click(object sender, EventArgs e)
@@ -88,7 +86,7 @@ namespace Simple_Reading_client_beta
 
         private void login(string login, string pass)
         {
-            string cs = ConfigurationManager.ConnectionStrings["class"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
             conn = new SqlConnection(cs);
 
             string sql = @"SELECT dbo.check_user (@log, @passw)";
@@ -108,6 +106,17 @@ namespace Simple_Reading_client_beta
                     plLogin.Visible = false;
                     this.MinimizeBox = true;
                     this.MaximizeBox = true;
+                    conn.Close();
+                    
+                    conn.Open();
+                    sql = @"SELECT title FROM categories";
+                    comm = new SqlCommand(sql, conn);
+                    SqlDataReader reader = comm.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cbCat.Items.Add(reader.GetString(reader.GetOrdinal("title")));
+                    }
+                    reader.Close();
                 }
                 else
                     label1.Text = "Пользователь не найден \nлибо пароль введен неправильно";
@@ -143,6 +152,16 @@ namespace Simple_Reading_client_beta
                     text.SourceColumn = "note_text";
                     text.SourceVersion = DataRowVersion.Current;
 
+                    SqlCommand insNotes = new SqlCommand(@"insert into notes(idarticle, note_text, iduser, date_edit) values(@ida, @note, @idu, getdate())");
+                    da.InsertCommand = insNotes;
+                    insNotes.Connection = conn;
+                    insNotes.Parameters.Add("@ida", SqlDbType.Int, 4, "idarticle");
+                    insNotes.Parameters.Add("@idu", SqlDbType.Int, 4, "iduser");
+
+                    SqlParameter notetext = da.InsertCommand.Parameters.Add("@note", SqlDbType.Text);
+                    notetext.SourceColumn = "note_text";
+                    notetext.SourceVersion = DataRowVersion.Current;
+
                     da.Update(set.Tables["notes"]);
                 }
 
@@ -160,8 +179,10 @@ namespace Simple_Reading_client_beta
             ArticleHelper ah = (ArticleHelper)listView1.SelectedItems[0].Tag;
             tbText.Text = ah.Text;
             tbNotes.Text = ah.Notes;
-            string cat = ah.Cat;
-            lbCat.Text = cat;
+            //string cat = ah.Cat;
+            //cbCat.Text = cat;
+            //cbCat.SelectedItem = cbCat.FindString("Программирование");
+            cbCat.SelectedIndex = cbCat.FindString(ah.Cat);
             lbTags.Text = ah.Tags;
             tbLink.Text = ah.Link;
             lbDate.Text = ah.Date;
@@ -176,7 +197,7 @@ namespace Simple_Reading_client_beta
             listView1.Items.Clear();
 
             set = new DataSet();
-            string cs = ConfigurationManager.ConnectionStrings["class"].ConnectionString;
+            string cs = ConfigurationManager.ConnectionStrings["home"].ConnectionString;
             conn = new SqlConnection(cs);
             da = new SqlDataAdapter();
 
@@ -296,22 +317,25 @@ namespace Simple_Reading_client_beta
                 (listView1.SelectedItems[0].Tag as ArticleHelper).Notes = tbNotes.Text;
                 edited = true;
 
-                int i = 0;
-                foreach (DataRow row in set.Tables["notes"].Rows)
+                DataRow[] r = set.Tables["notes"].Select("idarticle = " + (listView1.SelectedItems[0].Tag as ArticleHelper).Id);
+                if(r.Length == 1)
                 {
-                    if ((int)row["idarticle"] == (listView1.SelectedItems[0].Tag as ArticleHelper).Id)
+                    foreach (DataRow row in set.Tables["notes"].Rows)
                     {
-                        row["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                        if ((int)row["idarticle"] == (listView1.SelectedItems[0].Tag as ArticleHelper).Id)
+                        {
+                            row["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                        }
+                    
                     }
-                    if (i >= set.Tables["notes"].Rows.Count - 1)
-                    {
-                        DataRow r1 = set.Tables["notes"].NewRow();
-                        r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
-                        r1["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
-                        r1["iduser"] = user.Id;
-                        set.Tables["notes"].Rows.Add(r1);
-                    }
-                    i++;
+                }
+                else if (r.Length < 1)
+                {
+                    DataRow r1 = set.Tables["notes"].NewRow();
+                    r1["idarticle"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Id;
+                    r1["note_text"] = (listView1.SelectedItems[0].Tag as ArticleHelper).Notes;
+                    r1["iduser"] = user.Id;
+                    set.Tables["notes"].Rows.Add(r1);
                 }
                 //editedItems.Add(listView1.SelectedItems[0].Index);
                 //da.Update(set.Tables["notes"]);

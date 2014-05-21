@@ -37,7 +37,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lbDate = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
-            this.lbCat = new System.Windows.Forms.Label();
             this.tbNotes = new System.Windows.Forms.RichTextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
@@ -50,6 +49,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.tbLogin = new System.Windows.Forms.TextBox();
+            this.cbCat = new System.Windows.Forms.ComboBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.plLogin.SuspendLayout();
@@ -65,6 +65,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.cbCat);
             this.panel2.Controls.Add(this.tbLink);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.label6);
@@ -72,7 +73,6 @@
             this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.lbDate);
             this.panel2.Controls.Add(this.lbTags);
-            this.panel2.Controls.Add(this.lbCat);
             this.panel2.Controls.Add(this.tbNotes);
             this.panel2.Controls.Add(this.listView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -142,14 +142,6 @@
             this.lbTags.Size = new System.Drawing.Size(0, 13);
             this.lbTags.TabIndex = 8;
             // 
-            // lbCat
-            // 
-            this.lbCat.AutoSize = true;
-            this.lbCat.Location = new System.Drawing.Point(84, 393);
-            this.lbCat.Name = "lbCat";
-            this.lbCat.Size = new System.Drawing.Size(0, 13);
-            this.lbCat.TabIndex = 7;
-            // 
             // tbNotes
             // 
             this.tbNotes.Location = new System.Drawing.Point(0, 251);
@@ -191,6 +183,7 @@
             // 
             // tbText
             // 
+            this.tbText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbText.Location = new System.Drawing.Point(378, 206);
             this.tbText.Name = "tbText";
             this.tbText.ReadOnly = true;
@@ -263,6 +256,14 @@
             this.tbLogin.Size = new System.Drawing.Size(151, 20);
             this.tbLogin.TabIndex = 0;
             // 
+            // cbCat
+            // 
+            this.cbCat.FormattingEnabled = true;
+            this.cbCat.Location = new System.Drawing.Point(87, 390);
+            this.cbCat.Name = "cbCat";
+            this.cbCat.Size = new System.Drawing.Size(121, 21);
+            this.cbCat.TabIndex = 16;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btLogin;
@@ -295,7 +296,6 @@
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.RichTextBox tbNotes;
         private System.Windows.Forms.Label lbTags;
-        private System.Windows.Forms.Label lbCat;
         private System.Windows.Forms.Label lbDate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox tbText;
@@ -311,6 +311,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbLink;
+        private System.Windows.Forms.ComboBox cbCat;
 
     }
 }
