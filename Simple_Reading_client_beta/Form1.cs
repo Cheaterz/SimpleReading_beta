@@ -57,6 +57,8 @@ namespace Simple_Reading_client_beta
             listView1.Columns[0].Width = listView1.Width;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
+
+            tbLogin.Text = getMD5Hash("1234");
         }
 
         private void btLogin_Click(object sender, EventArgs e)
@@ -75,7 +77,7 @@ namespace Simple_Reading_client_beta
         {
             //http://msdn.microsoft.com/en-us/library/system.security.cryptography.md5%28v=vs.110%29.aspx
             MD5 md5H = MD5.Create();
-            byte[] data = md5H.ComputeHash(Encoding.UTF8.GetBytes(tbPassword.Text));
+            byte[] data = md5H.ComputeHash(Encoding.UTF8.GetBytes(p));
             StringBuilder sBuilder = new StringBuilder();
             for (int i = 0; i < data.Length; i++)
             {
